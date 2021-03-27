@@ -6,7 +6,10 @@ import { UserContext } from "../../App";
 import { useHistory, useLocation } from "react-router-dom";
 import './Login.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 
+const googleIcon = <FontAwesomeIcon icon={faGoogle} />
+const githubIcon = <FontAwesomeIcon icon={faGithub} />
 
 const Login = () => {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
@@ -27,7 +30,7 @@ const Login = () => {
                 const signedInUser = { name: displayName, email };
                 setLoggedInUser(signedInUser);
                 storeAuthToken();
-                history.replace(from);
+                
 
             }).catch((error) => {
                 var errorCode = error.code;
@@ -40,17 +43,19 @@ const Login = () => {
     const storeAuthToken = () => {
         firebase.auth().currentUser.getIdToken(true)
         .then(function (idToken) {
-            // console.log(idToken)
             sessionStorage.setItem('token', idToken);
+            history.replace(from);
         }).catch(function (error) {
            
         });
     }
 
     return (
-        <div>
+        <div className="loginControler">
             <h1>This is Login</h1>
-            <button onClick={handleGoogleSignIn}>Google Sign In</button>
+            <button className="googleLoginButton" onClick={handleGoogleSignIn}>{googleIcon} Google Sign In</button>
+            <br/>
+            <button className="githubLoginButton" onClick={handleGoogleSignIn}>{githubIcon} Github Sign In</button>
         </div>
     );
 };
